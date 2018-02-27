@@ -1,0 +1,17 @@
+# IDDFS
+
+## Usage
+
+## Installation
+
+## Author
+
+* moratori
+
+## Copyright
+
+Copyright (c) 2018 moratori
+
+## License
+
+Licensed under the LLGPL License.
