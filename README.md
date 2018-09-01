@@ -32,6 +32,17 @@ multi-threaded Iterative Deepening Depth First Search Library
 
 ## Installation
 
+```
+* (ql:quickload :iddfs)
+```
+
+## Test
+```
+* (ql:quickload :iddfs-test)
+* (in-package :iddfs-test)
+* (run)
+```
+
 ## Author
 
 * moratori
