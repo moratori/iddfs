@@ -4,14 +4,10 @@
 |#
 
 (defsystem "iddfs-test"
-  :defsystem-depends-on ("prove-asdf")
   :author "moratori"
   :license "LLGPL"
-  :depends-on ("iddfs"
-               "prove")
+  :depends-on ("iddfs" "1am")
   :components ((:module "tests"
                 :components
-                ((:test-file "iddfs"))))
-  :description "Test system for iddfs"
-
-  :perform (test-op (op c) (symbol-call :prove-asdf :run-test-system c)))
+                ((:file "iddfs"))))
+  :description "Test system for iddfs")

@@ -1,7 +1,7 @@
 (defpackage iddfs-test
   (:use :cl
         :iddfs
-        :prove))
+        :1am))
 (in-package :iddfs-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :iddfs)' in your Lisp.
@@ -45,71 +45,65 @@
 
 
 
-(plan 12)
-
-
-(progn
+(test test1
   (defmethod finish ((node even-or-odds))
     (= 9 (even-or-odds-num node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-even-or-odds :num 1) 10))
 
-    (ok (= deepth 3))
-    (ok (= (even-or-odds-num value) 9))))
+    (is (= deepth 3))
+    (is (= (even-or-odds-num value) 9))))
 
-(progn
+(test test2
   (defmethod finish ((node even-or-odds))
     (= 27 (even-or-odds-num node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-even-or-odds :num 1) 10))
 
-    (ok (= deepth 4))
-    (ok (= (even-or-odds-num value) 27))))
+    (is (= deepth 4))
+    (is (= (even-or-odds-num value) 27))))
 
-(progn
+(test test3
   (defmethod finish ((node even-or-odds))
     (= 1234 (even-or-odds-num node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-even-or-odds :num 1) 3))
 
-    (ok (null deepth))
-    (ok (null value))))
+    (is (null deepth))
+    (is (null value))))
 
-(progn
+(test test4
   (defmethod finish ((node even-or-odds))
     (= 1 (even-or-odds-num node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-even-or-odds :num 1) 3))
 
-    (ok (= deepth 0))
-    (ok (= 1 (even-or-odds-num value)))))
+    (is (= deepth 0))
+    (is (= 1 (even-or-odds-num value)))))
 
 
-(progn
+(test test5
   (defmethod finish ((node looped-graph))
     (string= "G" (looped-graph-label node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-looped-graph :label "A") 10))
 
-    (ok (= deepth 2))
-    (ok (string= "G" (looped-graph-label value)))))
+    (is (= deepth 2))
+    (is (string= "G" (looped-graph-label value)))))
 
-(progn
+(test test6
   (defmethod finish ((node looped-graph))
     (string= "E" (looped-graph-label node)))
   (multiple-value-bind 
     (deepth value)
     (time (iddfs (make-looped-graph :label "A") 10))
 
-    (ok (= deepth 1))
-    (ok (string= "E" (looped-graph-label value)))))
-
-(finalize)
-
+    (is (= deepth 1))
+    (is (string= "E" (looped-graph-label value)))))
 
 
