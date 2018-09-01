@@ -111,13 +111,7 @@
       (progn
         (loop 
           while (alive-pool-p threads-pool)
-          do 
-          (multiple-value-bind (local-cnt local-found) (found-pool threads-pool)
-            (when local-cnt
-              (setf cnt local-cnt
-                    result local-found)
-              (destroy-pool threads-pool)
-              (return-from exit nil))))
+          do (progn))
 
         (multiple-value-bind (local-cnt local-found) (found-pool threads-pool)
           (when local-cnt
