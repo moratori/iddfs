@@ -11,7 +11,7 @@
   :version "0.1.0"
   :author "moratori"
   :license "LLGPL"
-  :depends-on ()
+  :depends-on ("bordeaux-threads" "cl-cpus")
   :components ((:module "src"
                 :components
                 ((:file "iddfs"))))
