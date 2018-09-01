@@ -107,13 +107,14 @@
     (is (string= "E" (looped-graph-label value)))))
 
 (test test7
-  (let ((num 21342432))
+  (let ((num 40342432))
 
     (defmethod finish ((node even-or-odds))
       (= num (even-or-odds-num node)))
+
     (multiple-value-bind 
         (deepth value)
-        (time (iddfs (make-even-or-odds :num 1) 100))
+        (time (iddfs (make-even-or-odds :num 1) 150))
       
       (is (= (even-or-odds-num value) num)))))
 

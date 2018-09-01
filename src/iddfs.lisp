@@ -91,7 +91,7 @@
          (valid-number-of-processors
            (1- number-of-processors)))
     (cond
-      ((>= valid-number-of-processors 2)
+      ((>= valid-number-of-processors 3)
        (%iddfs-multi initial-node maximum-limit valid-number-of-processors))
       (t 
        (%iddfs-single initial-node maximum-limit)))))
@@ -129,7 +129,18 @@
 
 
 (defmethod %iddfs-single ((initial-node abstract-node) maximum-limit)
-  )
+  (let (cnt result)
+    (loop
+      named exit
+      for i from 0 upto maximum-limit
+      do
+      (multiple-value-bind
+        (flag value) (%iddfs-main initial-node i)
+        (when flag
+          (setf cnt i
+                result value)
+          (return-from exit nil))))
+    (values cnt result)))
 
 
 (defmethod %iddfs-main ((initial-node abstract-node) deepth)
