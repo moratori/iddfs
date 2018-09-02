@@ -6,12 +6,14 @@
     :abstract-node
     :open-nodes
     :finish
-    :iddfs)
+    :iddfs
+    :*minimal-number-of-worker-processors*
+    )
   )
 (in-package :iddfs)
 
-;; blah blah blah.
 
+(defparameter *minimal-number-of-worker-processors* 3)
 
 
 (defun make-thread-pools (maximum-limit number-of-processors)
@@ -55,15 +57,6 @@
     (values cnt result)))
 
 
-(defun destroy-pool (pool)
-  (loop 
-    for (_ . thread) in pool
-    do 
-    (if (thread-alive-p thread)
-      (destroy-thread thread)
-      (join-thread thread))))
-
-
 (defun alive-pool-p (pool)
   (some 
     (lambda (thread)
@@ -91,7 +84,7 @@
          (valid-number-of-processors
            (1- number-of-processors)))
     (cond
-      ((>= valid-number-of-processors 3)
+      ((>= valid-number-of-processors *minimal-number-of-worker-processors*)
        (%iddfs-multi initial-node maximum-limit valid-number-of-processors))
       (t 
        (%iddfs-single initial-node maximum-limit)))))
