@@ -4,8 +4,6 @@
         :1am))
 (in-package :iddfs-test)
 
-;; NOTE: To run this test file, execute `(asdf:test-system :iddfs)' in your Lisp.
-
 
 (defstruct (even-or-odds 
              (:include abstract-node))
