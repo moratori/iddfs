@@ -17,6 +17,7 @@
 
 
 (defun make-thread-pools (maximum-limit number-of-processors)
+  (declare (fixnum number-of-processors))
   (let* ((seed 
            (loop for i from 0 upto maximum-limit collect i))
          (len (length seed))
@@ -32,7 +33,6 @@
       (unless (zerop rest-of-pools)
         (list (subseq seed (- len rest-of-pools) len))))))
 
-
 (defun run-pool (initial-node pool)
   (loop for deepth in pool
         collect 
@@ -40,7 +40,6 @@
           deepth
           (make-thread
             (lambda () (%iddfs-main initial-node deepth))))))
-
 
 (defun found-pool (pool)
   (let (cnt result) 
@@ -56,15 +55,12 @@
             (return-from exit nil)))))
     (values cnt result)))
 
-
 (defun alive-pool-p (pool)
   (some 
     (lambda (thread)
       (destructuring-bind (_ . thread) thread
           (thread-alive-p thread))) 
     pool))
-
-
 
 
 (defstruct abstract-node)
@@ -77,8 +73,8 @@
   ;; abstract-node を引数にとって t or nil を返す関数
   (error "implement for specific method"))
 
-
 (defmethod iddfs ((initial-node abstract-node) maximum-limit)
+  (declare (fixnum maximum-limit))
   (let* ((number-of-processors 
            (get-number-of-processors))
          (valid-number-of-processors
@@ -90,8 +86,8 @@
        (%iddfs-single initial-node maximum-limit)))))
 
 
-
-(defmethod %iddfs-multi ((initial-node abstract-node) maximum-limit number-of-processors)
+(defun %iddfs-multi (initial-node maximum-limit number-of-processors)
+  (declare (fixnum maximum-limit number-of-processors))
   (let* ((thread-pools
            (make-thread-pools maximum-limit number-of-processors))
          (cnt nil)
@@ -105,17 +101,16 @@
         (loop 
           while (alive-pool-p threads-pool)
           do (progn))
-
         (multiple-value-bind (local-cnt local-found) (found-pool threads-pool)
           (when local-cnt
             (setf cnt local-cnt
                   result local-found)
             (return-from exit nil)))))
-
     (values cnt result)))
 
 
-(defmethod %iddfs-single ((initial-node abstract-node) maximum-limit)
+(defun %iddfs-single (initial-node maximum-limit)
+  (declare (fixnum maximum-limit))
   (let (cnt result)
     (loop
       named exit
@@ -130,7 +125,8 @@
     (values cnt result)))
 
 
-(defmethod %iddfs-main ((initial-node abstract-node) deepth)
+(defun %iddfs-main (initial-node deepth)
+  (declare (fixnum deepth))
   (cond 
     ((finish initial-node)
      (values t initial-node))
@@ -150,5 +146,4 @@
                 result node)
               (return-from exit nil))))
         (values flag result)))))
-
 
